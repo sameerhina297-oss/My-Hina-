@@ -1,0 +1,181 @@
+<script>
+    const images = ["https://i.postimg.cc/q7pGFVV0/IMG-20260206-143311-388.jpg", "https://i.postimg.cc/x1vRgj7f/IMG-20260206-143317-673.jpg", "https://i.postimg.cc/htLrM4YH/IMG-20260206-143324-394.jpg", "https://i.postimg.cc/wj82hRw2/IMG-20260206-143347-406.jpg", "https://i.postimg.cc/43X10kkp/IMG-20260206-143443-113.jpg"];
+    let currentImg = 0;
+
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    function moveNo() {
+        const btn = document.getElementById('noBtn');
+        // Added small padding so it doesn't go off-screen
+        const x = Math.random() * (window.innerWidth - btn.clientWidth - 50);
+        const y = Math.random() * (window.innerHeight - btn.clientHeight - 50);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
+
+    function giftAccepted() {
+        document.getElementById('bgMusic').play();
+        askFav();
+    }
+
+    function askFav() {
+        document.getElementById('content').innerHTML = `<b>Apun ko kya pasand hai? 🤔😋</b>
+            <button class="option-btn" onclick="favCorrect()">1: TUM ❤️</button>
+            <button class="option-btn" onclick="favWrong()">2: MANGO 🥭</button>
+            <button class="option-btn" onclick="favWrong()">3: CAKE 🎂</button>
+            <button class="option-btn" onclick="favWrong()">4: CHOWMIN 🍜</button>`;
+    }
+
+    function favCorrect() {
+        alert("CORRECT! ✅");
+        startQuiz();
+    }
+
+    function favWrong() {
+        alert("WRONG! ❌ Dubara socho...");
+        askFav();
+    }
+
+    function startQuiz() {
+        document.getElementById('content').innerHTML = `<b>Apni pehchan batao! 😎</b><b>Apka nickname kya Hai 😑</b><input type="text" id="nickInput" placeholder=""><button class="btn-next" onclick="checkNick()">Confirm 💖</button>`;
+    }
+
+    function checkNick() {
+        let val = document.getElementById('nickInput').value.toLowerCase().trim();
+        if (val === "akki") {
+            askBirthday();
+        } else {
+            alert("Galat nickname! 🤨 Sirf 'akki' chalega.");
+        }
+    }
+
+    function askBirthday() {
+        document.getElementById('content').innerHTML = `<b>Wo Apne Zidi Hubby ki Birthday batao? 🎂</b><input type="text" id="bday" placeholder="MM/DD/YYYY"><button class="btn-next" onclick="checkBday()">Next</button>`;
+    }
+
+    function checkBday() {
+        let val = document.getElementById('bday').value.trim();
+        if(val === '11/24/2008') {
+            askNick1();
+        } else {
+            alert('Wrong Birthday! 🤨 Try: 11/24/2008');
+        }
+    }
+
+    // Fixed the duplicate function names here
+    function askNick1() {
+        document.getElementById('content').innerHTML = `<b>Hubby ko "A" se kya bulati ho? 💋</b><input type="text" id="n1" placeholder=""><button class="btn-next" onclick="checkA()">Next</button>`;
+    }
+
+    function checkA() {
+        let val = document.getElementById('n1').value.toLowerCase().trim();
+        if (val === "akku") {
+            askNickExtra();
+        } else {
+            alert("Galat! Sahi likho 🤨");
+        }
+    }
+
+    function askNickExtra() {
+        document.getElementById('content').innerHTML = `<b>Aur "A" se kya bulati ho? 🥹💕🌹</b><input type="text" id="nExtra" placeholder=""><button class="btn-next" onclick="checkAExtra()">Next</button>`;
+    }
+
+    function checkAExtra() {
+        // You can add a specific check here if you want, or just proceed to askNick2
+        askNick2();
+    }
+
+    function askNick2() {
+        document.getElementById('content').innerHTML = `<b>"B" se kya bulati ho? 😋</b><input type="text" id="n2" placeholder=""><button class="btn-next" onclick="checkB1()">Next</button>`;
+    }
+
+    function checkB1() {
+        let val = document.getElementById('n2').value.toLowerCase().trim();
+        if (val === "burger") {
+            askNick3();
+        } else {
+            alert("Galat! Soch ke sahi likho 🤨");
+        }
+    }
+
+    function askNick3() {
+        document.getElementById('content').innerHTML = `<b>"B" se aur kya bulati ho? 🍼</b><input type="text" id="n3" placeholder=""><button class="btn-next" onclick="checkB2()">Final Submit</button>`;
+    }
+
+    function checkB2() {
+        let val = document.getElementById('n3').value.toLowerCase().trim();
+        if (val === "baccha") {
+            nextStep(1);
+        } else {
+            alert("Galat! Sahi bolo 🤨");
+        }
+    }
+
+    // ... rest of your nextStep and pyarResponse functions stay the same ...
+    function nextStep(step) {
+      const content = document.getElementById('content');
+      let img = images[currentImg++ % images.length];
+      if (step === 1) content.innerHTML = `<img src="${img}" class="romantic-img"><b>Hina my jaan 😍</b><button class="btn-next" onclick="nextStep(2)">Next ➡️</button>`;
+      else if (step === 2) content.innerHTML = `<img src="${img}" class="romantic-img"><b>Happy Valentine's Day wifuu 😘</b><button class="btn-next" onclick="nextStep(3)">Next ➡️</button>`;
+      else if (step === 3) {
+        content.innerHTML = `<img src="${img}" class="romantic-img"><b>Will you propose me? 🥺💍</b><div style="display:flex; gap:10px; margin-top:10px; justify-content:center; position: relative; height: 50px;"><button class="btn-yes" onclick="nextStep(4)">Yes ❤️</button><button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">No ❌</button></div>`;
+      } else if (step === 4) {
+        document.getElementById('bgMusic').pause();
+        content.innerHTML = `<video id="romVideo" class="romantic-video" loop playsinline controls autoplay><source src="https://files.catbox.moe/qyew5q.mp4" type="video/mp4"></video><b>Date pe chalo gi? 😍</b><button class="btn-next" onclick="nextStep(5)">Haan Bilkul</button>`;
+      } else if (step === 5) {
+        document.getElementById('bgMusic').play();
+        content.innerHTML = `<b>Emotional Promise: 🥺</b><div style="font-size:0.8rem; background:#fff0f3; padding:10px; border-radius:12px; border: 1px dashed #ff4d6d;">"Ha Mai Hina apne hubby ki promise karti Hun k hamesha pyar karu gi..."</div><input type="text" id="sign" placeholder="Sign: Hina malik"><button class="btn-next" onclick="if(document.getElementById('sign').value.toLowerCase().includes('hina malik')){nextStep(6)}else{alert('Sign kardo!')}">Submit</button>`;
+      } else if (step === 6) content.innerHTML = `<b>Ab "I Love You" bolo 💖</b><input type="text" id="l1"><button class="btn-next" onclick="valILove('l1', 7)">Bolo</button>`;
+      else if (step === 7) content.innerHTML = `<b>Bada sara bolo! 📢❤️</b><input type="text" id="l2"><button class="btn-next" onclick="valILove('l2', 8)">Bolo Bada Wala</button>`;
+      else if (step === 8) content.innerHTML = `<b>Please ek aur baar 🥺</b><input type="text" id="l3"><button class="btn-next" onclick="valILove('l3', 9)">Aakhri Baar</button>`;
+      else if (step === 9) content.innerHTML = `<b>Last Baar Please... 💋</b><input type="text" id="l4"><button class="btn-next" onclick="valILove('l4', 'pyarStep1')">Final Bolo</button>`;
+      else if (step === 'pyarStep1') {
+        content.innerHTML = `<b>Ham dono Mai se zeyada pyar kon karta Hai batao ji 😚</b><button class="option-btn" onclick="pyarResponse('tum')">TUM</button><button class="option-btn" onclick="pyarResponse('mai')">MAI</button>`;
+      } else if (step === 'pyarStep2') {
+        content.innerHTML = `<b>Ab sach batao, zeyada pyar kon karta hai? 🤨</b><button class="option-btn" onclick="pyarResponse('tum')">TUM</button><button class="option-btn" onclick="pyarResponse('mai')">MAI</button><button class="option-btn" onclick="pyarResponse('dono')">Hamdono</button><button class="option-btn" onclick="pyarResponse('noi')">Koi bhi noi</button>`;
+      }
+    }
+
+    function pyarResponse(choice) {
+      if (choice === 'tum') {
+        alert("mtlb tum kam pyar karti ho 🙂 🔪");
+        nextStep('pyarStep2');
+      } else if (choice === 'mai') {
+        alert("mtlb apun zeyada pyar noi karta 😭😭");
+        nextStep('pyarStep2');
+      } else if (choice === 'noi') {
+        alert("Galat jawab! 🤨 Cheating mat karo...");
+      } else if (choice === 'dono') {
+        openGift();
+      }
+    }
+
+    function openGift() {
+      document.getElementById('content').innerHTML = `<b>Ek surprise hai! 🎁</b><br><div class="gift-box" onclick="showKiss()">🎁</div><br><b>Open the gift box</b>`;
+    }
+
+    function showKiss() {
+      let img = images[currentImg % images.length];
+      document.getElementById('content').innerHTML = `<img src="${img}" class="romantic-img"><div class="kiss-anim romantic-font">ummmmmmmhhhhhh 💋😘😘</div><button class="btn-next" onclick="finalStep()">Last Step ➡️</button>`;
+    }
+
+    function finalStep() {
+      document.getElementById('content').innerHTML = `<img src="${images[0]}" class="romantic-img"><b class="animate-text romantic-font">I too love you so much jaan! ❤️😘</b><button class="btn-next" style="background:#ffbc42; color:#000;" onclick="document.getElementById('voiceNote').play()">🔊 Play My Voice Note</button><br><b>Hamesha mere saath rehna! 💍</b>`;
+    }
+
+    function valILove(id, next) {
+      let val = document.getElementById(id).value.toLowerCase();
+      if (val.includes("love") && val.includes("you")) nextStep(next);
+      else alert("Galat, cheating noi bacchi 🤨 Bolna to wahi pare ga Jo kaha ha hai🤪🤪 !");
+    }
+</script>
